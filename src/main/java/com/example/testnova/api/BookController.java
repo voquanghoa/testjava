@@ -4,12 +4,14 @@ import com.example.testnova.model.Book;
 import com.example.testnova.request.BookRequest;
 import com.example.testnova.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/books")
 public class BookController {
 
     private final BookService bookService;
@@ -19,29 +21,29 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books")
+    @GetMapping
     public List<Book> getBooks(){
         return bookService.getBooks();
     }
 
-    @GetMapping("/books/{id}")
+    @GetMapping("/{id}")
     public Book getBooks(@PathVariable("id") UUID id){
         return bookService.getBook(id);
     }
 
-    @PostMapping("/books")
+    @PostMapping
     public Book createBook(@RequestBody BookRequest req){
         return bookService.createBook(req);
     }
 
-    @PutMapping("/books/{id}")
+    @PutMapping("/{id}")
     public void updateBook(
             @PathVariable("id") UUID id,
-            @RequestBody BookRequest req){
+            @RequestBody @Validated BookRequest req){
         bookService.updateBook(id, req);
     }
 
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable("id") UUID id){
         bookService.deleteBook(id);
     }
